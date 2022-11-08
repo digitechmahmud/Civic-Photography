@@ -40,14 +40,15 @@ async function run() {
             res.send(service);
         });
         
-        app.get('/reviews', async (req, res) => {
-            const query = {};
-            const cursor = reviewCollection.find(query);
-            const reviews = await cursor.toArray();
-            res.send(reviews);
-        })
+        // app.get('/reviews', async (req, res) => {
+        //     const query = {};
+        //     const cursor = reviewCollection.find(query);
+        //     const reviews = await cursor.toArray();
+        //     res.send(reviews);
+        // })
 
-        app.get('/review', async (req, res) => {
+
+        app.get('/reviews', async (req, res) => {
             let query = {};
             if (req.query.email) {
                 query = {
@@ -58,10 +59,16 @@ async function run() {
             const reviews = await cursor.toArray();
             res.send(reviews);
         })
-        
 
+        app.get('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(req.params.id);
+            const query = {id};
+            const review = await reviewCollection.findOne(query);
+            res.send(review);
+        })
         
-
+        
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewCollection.insertOne(review);
