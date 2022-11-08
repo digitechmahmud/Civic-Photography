@@ -62,7 +62,6 @@ async function run() {
 
         app.get('/reviews/:id', async (req, res) => {
             const id = req.params.id;
-            console.log(req.params.id);
             const query = {id};
             const review = await reviewCollection.findOne(query);
             res.send(review);
