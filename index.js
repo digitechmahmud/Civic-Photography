@@ -15,7 +15,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
-        
+        const serviceCollection = client.db('civicPhotography').collection('services');
+
+        app.get('/', async (req, res) => {
+            const query = {}
+            // const size = parseInt(req.query.size);
+            const cursor = serviceCollection.find(query);
+            const services = await cursor.limit(3).toArray();
+            res.send(services);
+        })
     }
     finally {
         
