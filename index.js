@@ -5,14 +5,16 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
+// middleware
 app.use(cors());
 app.use(express.json());
 
 
-
+// DB Connection
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.rwqozng.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+// CRUD Operations
 async function run() {
     try {
         const serviceCollection = client.db('civicPhotography').collection('services');
@@ -39,14 +41,7 @@ async function run() {
             const service = await serviceCollection.findOne(query);
             res.send(service);
         });
-        
-        // app.get('/reviews', async (req, res) => {
-        //     const query = {};
-        //     const cursor = reviewCollection.find(query);
-        //     const reviews = await cursor.toArray();
-        //     res.send(reviews);
-        // })
-
+    
 
         app.get('/reviews', async (req, res) => {
             let query = {};
