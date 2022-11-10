@@ -16,23 +16,6 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@clu
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
-function verifyJWT(req, res, next) {
-    const authHeader = req.header.authorization;
-    if (!authHeader) {
-        return res.status(401).send({ message: 'Unathorized Access' });
-    }
-    const token = authHeader.spit(' ')[1];
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
-        if (err) {
-            res.status(401).send({ message: 'unauthorized access' });
-        }
-        req.decoded = decoded; 
-        next();
-    })
-}
-
-
-
 // CRUD Operations
 async function run() {
     try {
@@ -99,11 +82,7 @@ async function run() {
             res.send(result);
         })
 
-        app.post('/jwt', async (req, res) => {
-            const user = req.body;
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "2d" })
-            res.send({ token });
-        })
+       
 
         app.put('/reviews/:id', async (req, res) => {
             const id = req.params.id;
